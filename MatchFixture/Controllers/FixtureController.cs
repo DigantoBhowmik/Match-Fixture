@@ -9,13 +9,14 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace MatchFixture.Controllers
 {
+    [Produces("application/json")]
+    [Route("api/Fixtures/[action]")]
     [ApiController]
-    [Route("api/[action]")]
     public class FixtureController : Controller
     {
         [HttpGet]
         [ActionName("GenarateFixture")]
-        public async Task<List<FixtureDto>> GenarateFixture()
+        public List<FixtureDto> GenarateFixture()
         {
             try
             {
