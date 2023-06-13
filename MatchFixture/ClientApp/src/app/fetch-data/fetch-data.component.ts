@@ -11,6 +11,7 @@ import {
 export class FetchDataComponent implements OnInit{
   // public forecasts: WeatherForecast[] = [];
   fixtures: FixtureDto[] = [];
+  
 
   constructor(http: HttpClient, private fixtureService: FixtureService)
     // @Inject('BASE_URL') baseUrl: string) 
@@ -24,6 +25,7 @@ export class FetchDataComponent implements OnInit{
   }
   getFixtures(){
     this.fixtureService.genarateFixture().subscribe(result => {
+      console.log(result);
       this.fixtures = result;
     })
   }

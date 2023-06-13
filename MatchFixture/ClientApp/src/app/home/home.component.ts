@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 interface Fixture {
   homeTeam: string;
   awayTeam: string;
@@ -31,41 +32,57 @@ export class HomeComponent implements OnInit {
     //"Wolverhampton Wanderers"
   ];
   fixtures: any;
+  form: FormGroup;
 
+  constructor(private fb: FormBuilder,) {
+    
+   }
+   
 
   ngOnInit() {
-    this.generateFixtures();
+    this.buildForm();
+    // this.generateFixtures();
+  }
+  get validData() {
+    return this.form.controls;
   }
 
-  generateFixtures() {
-    var numberOfRounds = this.teams.length - 1;
-    let fixtureCopy = [];
-      for (let i = 0; i < numberOfRounds; i++) {
-        const fixturesInRound1 = [];
-        const fixturesInRound2 = [];
+   buildForm() {
+    this.form = this.fb.group({
+      name: [ '', Validators.required]
+    });
+    console.log(this.form);
+  }
 
-        for (var j = 0; j < this.teams.length / 2; j++) {
-          const homeTeam = this.teams[j];
-          const awayTeam = this.teams[this.teams.length - 1 - j];
-          let fixture = {} as Fixture
-          let fixture1 = {} as Fixture
-          fixture = {
-            homeTeam: homeTeam,
-            awayTeam: awayTeam,
-          };
-          fixture1 = {
-            homeTeam: awayTeam,
-            awayTeam: homeTeam,
-          };
-          fixturesInRound1.push(fixture);
-          fixturesInRound2.push(fixture1);
-        }
-        fixtureCopy.push(fixturesInRound1);
-        fixtureCopy.push(fixturesInRound2);
-        this.teams.splice(1, 0, this.teams[numberOfRounds]);
-        this.teams.pop();
-        this.fixtures = fixtureCopy;
-    }
+  // generateFixtures() {
+  //   var numberOfRounds = this.teams.length - 1;
+  //   let fixtureCopy = [];
+  //     for (let i = 0; i < numberOfRounds; i++) {
+  //       const fixturesInRound1 = [];
+  //       const fixturesInRound2 = [];
+
+  //       for (var j = 0; j < this.teams.length / 2; j++) {
+  //         const homeTeam = this.teams[j];
+  //         const awayTeam = this.teams[this.teams.length - 1 - j];
+  //         let fixture = {} as Fixture
+  //         let fixture1 = {} as Fixture
+  //         fixture = {
+  //           homeTeam: homeTeam,
+  //           awayTeam: awayTeam,
+  //         };
+  //         fixture1 = {
+  //           homeTeam: awayTeam,
+  //           awayTeam: homeTeam,
+  //         };
+  //         fixturesInRound1.push(fixture);
+  //         fixturesInRound2.push(fixture1);
+  //       }
+  //       fixtureCopy.push(fixturesInRound1);
+  //       fixtureCopy.push(fixturesInRound2);
+  //       this.teams.splice(1, 0, this.teams[numberOfRounds]);
+  //       this.teams.pop();
+  //       this.fixtures = fixtureCopy;
+  //   }
     //let numberOfTeams = this.teams.length;
     //let gameWeek = (numberOfTeams - 1) * 2;
 
@@ -104,7 +121,7 @@ export class HomeComponent implements OnInit {
     //}
     //this.fixtures = fixtureCopy;
     //console.log(fixtureCopy)
-  }
+  // }
   // private shuffleArray<T>(array: T[]): T[] {
   //   const newArray = array.slice();
 

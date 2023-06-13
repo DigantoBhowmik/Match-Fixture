@@ -1,11 +1,31 @@
-﻿var builder = WebApplication.CreateBuilder(args);
+﻿using MatchFixture.Data;
+using MatchFixture.Interfaces;
+using MatchFixture.Repositories;
+using Microsoft.EntityFrameworkCore;
+
+var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+// Add services to the container.
+builder.Services.AddDbContext<MatchFixtureDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("ConnectionString")));
+
+
+builder.Services.AddScoped<ITeamRepository, TeamRepository>();
+
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("MyPolicy", policy =>
+    {
+        policy.WithOrigins("https://localhost:44466")
+               .AllowAnyMethod()
+               .AllowAnyHeader();
+    });
+});
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -31,6 +51,7 @@ app.MapControllerRoute(
     pattern: "{controller}/{action=Index}/{id?}");
 
 app.MapFallbackToFile("index.html");;
+app.UseCors("MyPolicy");
 
 app.Run();
 

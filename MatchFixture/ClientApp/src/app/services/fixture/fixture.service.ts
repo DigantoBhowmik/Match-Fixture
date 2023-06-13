@@ -10,7 +10,7 @@ import { FixtureDto } from "./fixture.model";
 })
 export class FixtureService {
   private headers: HttpHeaders;
-  private baseUrl: string = environment.apiUrl + "/api/fixtures";
+  private baseUrl: string = environment.apiUrl + "/api/Fixtures";
 
   constructor(private http: HttpClient) {
     this.headers = new HttpHeaders({
