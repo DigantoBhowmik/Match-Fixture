@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace MatchFixture.Controllers
 {
     [Produces("application/json")]
-    [Route("api/Fixtures/[action]")]
+    [Route("api/Teams/[action]")]
     [ApiController]
     public class TeamController : ControllerBase
     {
@@ -26,7 +26,7 @@ namespace MatchFixture.Controllers
         }
         [HttpPost]
         [ActionName("CreateTeam")]
-        public IActionResult CreateTeam(TeamDto input)
+        public IActionResult CreateTeam([FromBody] TeamDto input)
         {
             try
             {

@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { TeamService } from '../services/team';
 interface Fixture {
   homeTeam: string;
   awayTeam: string;
@@ -33,27 +35,79 @@ export class HomeComponent implements OnInit {
   ];
   fixtures: any;
   form: FormGroup;
+  name: FormControl;
+  closeResult = '';
+  isModalOpen = false;
+  isSubmitted = false;
+  isSubmitting = false;
 
-  constructor(private fb: FormBuilder,) {
-    
-   }
-   
+  constructor(private fb: FormBuilder, private modalService: NgbModal, private teamService: TeamService) {
+  }
+
 
   ngOnInit() {
     this.buildForm();
     // this.generateFixtures();
   }
-  get validData() {
-    return this.form.controls;
-  }
+  // get validData() {
+  //   return this.form.controls;
+  // }
 
-   buildForm() {
-    this.form = this.fb.group({
-      name: [ '', Validators.required]
+  //  buildForm() {
+  //   this.form = this.fb.group({
+  //     name: [ '', Validators.required]
+  //   });
+  //   console.log(this.form);
+  // }
+
+  buildForm() {
+    this.name = new FormControl('', [Validators.required]);
+    this.form = new FormGroup({
+      name: this.name,
     });
-    console.log(this.form);
   }
 
+  add(teamModal) {
+    this.buildForm();
+    this.modalService.open(teamModal, { ariaLabelledBy: '' }).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
+  }
+
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return 'by clicking on a backdrop';
+    } else {
+      return `with: ${reason}`;
+    }
+  }
+
+  get signUpData() { return this.form.controls; }
+
+  onSubmit() {
+    this.isModalOpen = true;
+    this.isSubmitted = true;
+    if (this.form.invalid) {
+      return;
+    }
+    this.isSubmitting = true;
+    this.isSubmitted = false;
+
+    this.teamService.addTeam(this.form.value).subscribe(x => {
+      this.isSubmitting = false;
+      this.resetForm();
+    }, error => {
+      this.isSubmitting = false;
+    });
+  }
+
+  resetForm() {
+    this.form.reset();
+  }
   // generateFixtures() {
   //   var numberOfRounds = this.teams.length - 1;
   //   let fixtureCopy = [];
@@ -83,44 +137,44 @@ export class HomeComponent implements OnInit {
   //       this.teams.pop();
   //       this.fixtures = fixtureCopy;
   //   }
-    //let numberOfTeams = this.teams.length;
-    //let gameWeek = (numberOfTeams - 1) * 2;
+  //let numberOfTeams = this.teams.length;
+  //let gameWeek = (numberOfTeams - 1) * 2;
 
-    //let fixtureCopy = [];
+  //let fixtureCopy = [];
 
-    //for (let round = 1; round <= gameWeek; round++) {
-    //  const fixturesInRound = [];
+  //for (let round = 1; round <= gameWeek; round++) {
+  //  const fixturesInRound = [];
 
-    //  // Shuffle the teams randomly
-    //  // const shuffledTeams = this.shuffleArray(this.teams.slice());
+  //  // Shuffle the teams randomly
+  //  // const shuffledTeams = this.shuffleArray(this.teams.slice());
 
-    //  for (let i = 0; i < numberOfTeams / 2; i++) {
-    //    const homeTeam = this.teams[i];
-    //    const awayTeam = this.teams[i + numberOfTeams / 2];
-    //    let fixture = {} as Fixture
-    //    if (round > gameWeek / 2) {
-    //      fixture = {
-    //        homeTeam: awayTeam,
-    //        awayTeam: homeTeam,
-    //      };
-    //    }
-    //    else {
-    //      fixture = {
-    //        homeTeam,
-    //        awayTeam,
-    //      };
+  //  for (let i = 0; i < numberOfTeams / 2; i++) {
+  //    const homeTeam = this.teams[i];
+  //    const awayTeam = this.teams[i + numberOfTeams / 2];
+  //    let fixture = {} as Fixture
+  //    if (round > gameWeek / 2) {
+  //      fixture = {
+  //        homeTeam: awayTeam,
+  //        awayTeam: homeTeam,
+  //      };
+  //    }
+  //    else {
+  //      fixture = {
+  //        homeTeam,
+  //        awayTeam,
+  //      };
 
-    //    }
-    //    fixturesInRound.push(fixture);
-    //  }
+  //    }
+  //    fixturesInRound.push(fixture);
+  //  }
 
-    //  fixtureCopy.push(fixturesInRound);
+  //  fixtureCopy.push(fixturesInRound);
 
-    //  // Rotate the teams in the second half for the next round
-    //  this.teams.splice(0, 0, this.teams.pop()!);
-    //}
-    //this.fixtures = fixtureCopy;
-    //console.log(fixtureCopy)
+  //  // Rotate the teams in the second half for the next round
+  //  this.teams.splice(0, 0, this.teams.pop()!);
+  //}
+  //this.fixtures = fixtureCopy;
+  //console.log(fixtureCopy)
   // }
   // private shuffleArray<T>(array: T[]): T[] {
   //   const newArray = array.slice();
