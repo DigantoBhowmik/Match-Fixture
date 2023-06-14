@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq.Expressions;
 using MatchFixture.Data;
 using MatchFixture.Interfaces;
 using MatchFixture.Models;
@@ -7,15 +8,15 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace MatchFixture.Repositories
 {
-	public class RepositoryBase<T> : IRepositoryBase<T>
+    public class RepositoryBase<T> : IRepositoryBase<T>
             where T : class, IEntityBase, new()
     {
         public MatchFixtureDbContext _context;
 
         public RepositoryBase(MatchFixtureDbContext context)
-		{
+        {
             _context = context;
-		}
+        }
         public virtual IEnumerable<T> GetAll()
         {
             return _context.Set<T>().Where(x => x.IsDeleted != true).AsEnumerable();
@@ -23,6 +24,11 @@ namespace MatchFixture.Repositories
         public T GetSingle(int id)
         {
             return _context.Set<T>().FirstOrDefault(x => x.Id == id && x.IsDeleted != true);
+        }
+
+        public virtual IEnumerable<T> FindBy(Expression<Func<T, bool>> predicate)
+        {
+            return _context.Set<T>().Where(predicate);
         }
         public virtual void Add(T entity)
         {

@@ -1,4 +1,5 @@
 
 export interface TeamDto {
-    name: string;
+  id: number;
+  name: string;
 }

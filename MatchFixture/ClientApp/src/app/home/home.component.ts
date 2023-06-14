@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { TeamDto } from './../services/team/team.model';
+import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TeamService } from '../services/team';
+//import { ToastrService } from 'ngx-toastr';
 interface Fixture {
   homeTeam: string;
   awayTeam: string;
@@ -11,28 +13,7 @@ interface Fixture {
   templateUrl: './home.component.html',
 })
 export class HomeComponent implements OnInit {
-  teams = [
-    "Arsenal",
-    "Aston Villa",
-    "Brentford",
-    "Brighton & Hove Albion",
-    "Burnley",
-    "Chelsea",
-    //"Crystal Palace",
-    //"Everton",
-    //"Leeds United",
-    //"Leicester City",
-    //"Liverpool",
-    //"Manchester City",
-    //"Manchester United",
-    //"Newcastle United",
-    //"Norwich City",
-    //"Southampton",
-    //"Tottenham Hotspur",
-    //"Watford",
-    //"West Ham United",
-    //"Wolverhampton Wanderers"
-  ];
+  
   fixtures: any;
   form: FormGroup;
   name: FormControl;
@@ -41,24 +22,30 @@ export class HomeComponent implements OnInit {
   isSubmitted = false;
   isSubmitting = false;
 
-  constructor(private fb: FormBuilder, private modalService: NgbModal, private teamService: TeamService) {
+  teams: TeamDto[] = [];
+  teamForEdit: TeamDto;
+
+  isEdit = false;
+
+  constructor(private fb: FormBuilder, 
+    private modalService: NgbModal, 
+    private teamService: TeamService,
+    //@Inject(ToastrService) private toastr: ToastrService
+    ) {
   }
 
 
   ngOnInit() {
     this.buildForm();
     // this.generateFixtures();
+    this.getTeamList();
   }
-  // get validData() {
-  //   return this.form.controls;
-  // }
 
-  //  buildForm() {
-  //   this.form = this.fb.group({
-  //     name: [ '', Validators.required]
-  //   });
-  //   console.log(this.form);
-  // }
+  getTeamList() {
+    this.teamService.getTeams().subscribe(res => {
+      this.teams = res;
+    });
+  }
 
   buildForm() {
     this.name = new FormControl('', [Validators.required]);
@@ -69,7 +56,23 @@ export class HomeComponent implements OnInit {
 
   add(teamModal: any) {
     this.buildForm();
+    //this.teamForEdit = null;
+    this.isEdit = false;
     this.modalService.open(teamModal, { ariaLabelledBy: '' }).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
+  }
+
+  edit(contents: TeamDto, modalItem: any) {
+    this.isEdit = true;
+    this.teamForEdit = contents;
+    this.name = new FormControl(this.teamForEdit.name, [Validators.required]);
+    this.form = new FormGroup({
+      name: this.name
+    });
+    this.modalService.open(modalItem, { ariaLabelledBy: 'team-title' }).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
       this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
@@ -97,12 +100,41 @@ export class HomeComponent implements OnInit {
     this.isSubmitting = true;
     this.isSubmitted = false;
 
-    this.teamService.addTeam(this.form.value).subscribe(x => {
-      this.isSubmitting = false;
-      this.resetForm();
-    }, error => {
-      this.isSubmitting = false;
-    });
+    if (this.teamForEdit && this.isEdit) {
+      let team: TeamDto = {
+        name: this.form.value.name,
+        id:0
+      }
+      this.teamService.updateTeamById(this.teamForEdit.id, team).subscribe(x => {
+        //this.toastr.success("Update successfully");
+        this.isSubmitting = false;
+        this.resetForm();
+        this.getTeamList();
+      }, error => {
+        //this.toastr.error(error.error);
+        this.isSubmitting = false;
+      });
+    }
+    else {
+      this.teamService.addTeam(this.form.value).subscribe(x => {
+        //this.toastr.success("Successfully added");
+        this.isSubmitting = false;
+        this.resetForm();
+        this.getTeamList();
+      }, error => {
+        this.isSubmitting = false;
+      });
+    }
+  }
+
+  delete(id: any) {
+    const result = confirm('Do you want to delete question with id: ' + id);
+    if (result) {
+      this.teamService.deleteTeamById(id).subscribe(x => {
+        //this.toastr.error("successfully deleted");
+        this.getTeamList();
+      });
+    }
   }
 
   resetForm() {

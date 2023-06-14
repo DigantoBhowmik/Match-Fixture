@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using MatchFixture.Dtos;
+using MatchFixture.Interfaces;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,14 +15,23 @@ namespace MatchFixture.Controllers
     [Produces("application/json")]
     [Route("api/Fixtures/[action]")]
     [ApiController]
-    public class FixtureController : Controller
+    public class FixtureController : ControllerBase
     {
+        private readonly ITeamRepository _teamRepository;
+
+        public FixtureController(
+            ITeamRepository teamRepository
+            )
+        {
+            _teamRepository = teamRepository;
+        }
         [HttpGet]
         [ActionName("GenarateFixture")]
         public List<FixtureDto> GenarateFixture()
         {
             try
             {
+                var teamAll = _teamRepository.GetAll();
                 List<string> teams = new List<string> {
                     "Arsenal",
                     "Aston Villa",

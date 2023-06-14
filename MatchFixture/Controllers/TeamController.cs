@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using MatchFixture.Dtos;
@@ -24,6 +26,14 @@ namespace MatchFixture.Controllers
         {
             _teamRepository = teamRepository;
         }
+
+        [HttpGet]
+        [ActionName("GetTeams")]
+        public List<Team> GetTeams()
+        {
+            return _teamRepository.GetAll().ToList();
+        }
+
         [HttpPost]
         [ActionName("CreateTeam")]
         public IActionResult CreateTeam([FromBody] TeamDto input)
@@ -45,6 +55,58 @@ namespace MatchFixture.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpPut]
+        [ActionName("UpdateTeamById")]
+        public IActionResult UpdateTeamById(int id, [FromBody] TeamDto input)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var _team = _teamRepository.FindBy(x => x.Id == id).FirstOrDefault();
+                    if (_team == null)
+                    {
+                        return BadRequest();
+                    }
+                    if (_team != null)
+                    {
+                        _team.Name = input.Name;
+                    }
+
+                    _teamRepository.Update(_team);
+                    _teamRepository.Commit();
+                }
+                catch (Exception ex)
+                {
+
+                }
+            }
+            else if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            return Ok("");
+        }
+
+
+        [HttpGet]
+        [ActionName("DeleteTeamById")]
+        public IActionResult DeleteTeamById(int? id)
+        {
+            var _team = _teamRepository.FindBy(x => x.Id == id).FirstOrDefault();
+
+            if (_team == null)
+            {
+                return NotFound();
+            }
+            _teamRepository.Delete(_team);
+            _teamRepository.Commit();
+
+            return Ok();
+        }
     }
 }
+
+
 

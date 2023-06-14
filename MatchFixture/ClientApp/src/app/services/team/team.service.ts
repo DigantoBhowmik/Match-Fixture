@@ -23,4 +23,21 @@ export class TeamService {
       headers: this.headers,
     });
   }
+
+  public getTeams() {
+    return this.http.get<TeamDto[]>(this.baseUrl + "/GetTeams");
+  }
+
+  public updateTeamById(id: number, data: TeamDto) {
+    return this.http.put(
+      this.baseUrl + "/UpdateTeamById?id=" + id, data, {
+      headers: this.headers
+    });
+  }
+
+  public deleteTeamById(id: number): Observable<TeamDto> {
+    return this.http.get<TeamDto>(
+      this.baseUrl + "/DeleteTeamById?id=" + id
+    );
+  }
 }

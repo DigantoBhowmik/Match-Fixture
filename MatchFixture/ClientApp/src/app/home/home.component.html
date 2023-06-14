@@ -2,60 +2,47 @@
 <hr>
 <div>
     <h5 style="margin-left: 4px;">Add Team</h5>
-    <form [formGroup]="form">
+    <!-- <form [formGroup]="form">
         <div class="input-group mb-3" style="width: 20% !important;">
             <input type="text" class="form-control" placeholder="Team's name" formControlName="name">
             <button class="btn btn-primary" type="button">ADD</button>
-            <!-- <div  style="margin-left: 5px;">
+            <div  style="margin-left: 5px;">
               <button class="btn btn-primary" type="button">ADD</button>
-            </div> -->
+            </div>
           </div>
-    </form>
+    </form> -->
   <div class="input-group-append" style="margin-left: 5px;">
-    <button class="btn btn-primary" type="button" (click)="add(teamModal)">ADD</button>
+      <button class="btn btn-primary" type="button" (click)="add(teamModal)">ADD</button>
   </div>
 
 </div>
 
+<table class='table table-striped' aria-labelledby="tableLabel" *ngIf="teams">
+    <thead>
+      <tr>
+        <th>Sl. No.</th>
+        <th>Team Team</th>
+        <!-- <th>Creation Time</th> -->
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of teams; let i = index">
+        <td>{{ i + 1}}</td>
+        <td>{{ item.name }}</td>
+        <!-- <td>{{ item.creationTime }}</td> -->
+        <td>
+            <a class="mx-4" (click)="edit(item, teamModal)"><img src="assets/images/icons/edit.svg" alt="" /></a>
+            <a (click)="delete(item.id)"><img src="assets/images/icons/trash.svg" alt="" /></a>
 
-<div class="common-table">
-    <table class='table table-striped' aria-labelledby="tableLabel" >
-        <thead>
-          <tr>
-            <th>Team Name</th>
-            <th>Creation Time</th>
-            <!-- <th></th> -->
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Team 1</td>
-            <td>12/38/22</td>
-            <!-- <td>
-                <a ><img src="assets/images/icons/edit.svg" alt="" /></a>
-            </td> -->
-            <td>
-                <a ><img src="assets/images/icons/trash.svg" alt="" /></a>
-            </td>
-          </tr>
-          <tr>
-            <td>Team 1</td>
-            <td>12/38/22</td>
-            <!-- <td>
-                <a ><img src="assets/images/icons/edit.svg" alt="" /></a>
-            </td> -->
-            <td>
-                <a ><img src="assets/images/icons/trash.svg" alt="" /></a>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-</div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 
 <ng-template #teamModal let-modal>
   <div class="modal-header">
-    <h4 class="modal-title" id="question-title">Add Team</h4>
+      <h4 class="modal-title" id="question-title">{{isEdit ? 'Edit Team': 'New Team'}}</h4>
     <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
       <span aria-hidden="true">&times;</span>
     </button>
@@ -64,8 +51,8 @@
     <form [formGroup]="form" novalidate>
       <div class="form-group">
         <div class="input-data">
+            <label>Name</label>
           <input type="text" name="name" id="name" formControlName="name" placeholder="Team name" required>
-          <label>Name</label>
         </div>
         <div
           *ngIf="signUpData.name.invalid && (signUpData.name.dirty || signUpData.name.touched || isSubmitted) && signUpData.name.errors?.required"
