@@ -67,7 +67,7 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  add(teamModal) {
+  add(teamModal: any) {
     this.buildForm();
     this.modalService.open(teamModal, { ariaLabelledBy: '' }).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;

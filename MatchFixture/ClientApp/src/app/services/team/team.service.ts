@@ -18,7 +18,7 @@ export class TeamService {
     });
   }
 
-  public addTeam(data) {
+  public addTeam(data: TeamDto) {
     return this.http.post(this.baseUrl + "/CreateTeam", data, {
       headers: this.headers,
     });
