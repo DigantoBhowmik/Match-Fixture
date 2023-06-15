@@ -31,29 +31,35 @@ namespace MatchFixture.Controllers
         {
             try
             {
-                var teamAll = _teamRepository.GetAll();
-                List<string> teams = new List<string> {
-                    "Arsenal",
-                    "Aston Villa",
-                    "Brentford",
-                    "Brighton & Hove Albion",
-                    "Burnley",
-                    "Chelsea",
-                    "Crystal Palace",
-                    "Everton",
-                    "Leeds United",
-                    "Leicester City",
-                    "Liverpool",
-                    "Manchester City",
-                    "Manchester United",
-                    "Newcastle United",
-                    "Norwich City",
-                    "Southampton",
-                    //"Tottenham Hotspur",
-                    //"Watford",
-                    //"West Ham United",
-                    //"Wolverhampton Wanderers"
-                };
+                var teamAll = _teamRepository.GetAll().ToList();
+
+                List<string> teams = new List<string>();
+                teamAll.ForEach(x =>
+                {
+                    teams.Add(x.Name);
+                });
+                //List<string> teams = new List<string> {
+                //    "Arsenal",
+                //    "Aston Villa",
+                //    "Brentford",
+                //    "Brighton & Hove Albion",
+                //    "Burnley",
+                //    "Chelsea",
+                //    "Crystal Palace",
+                //    "Everton",
+                //    "Leeds United",
+                //    "Leicester City",
+                //    "Liverpool",
+                //    "Manchester City",
+                //    "Manchester United",
+                //    "Newcastle United",
+                //    "Norwich City",
+                //    "Southampton",
+                //    //"Tottenham Hotspur",
+                //    //"Watford",
+                //    //"West Ham United",
+                //    //"Wolverhampton Wanderers"
+                //};
                 var numberOfRounds = teams.Count - 1;
                 var fixture = new List<FixtureDto>();
 

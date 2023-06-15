@@ -12,6 +12,7 @@ builder.Services.AddDbContext<MatchFixtureDbContext>(options =>
 
 
 builder.Services.AddScoped<ITeamRepository, TeamRepository>();
+builder.Services.AddScoped<ITournamentRepository, TournamentRepository>();
 
 
 builder.Services.AddControllersWithViews();

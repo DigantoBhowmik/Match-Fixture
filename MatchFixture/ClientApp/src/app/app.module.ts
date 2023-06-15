@@ -9,6 +9,9 @@ import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
 import { CounterComponent } from './counter/counter.component';
 import { FetchDataComponent } from './fetch-data/fetch-data.component';
+import { TournamentComponent } from './tournament/tournament.component';
+import { TeamComponent } from './team/team.component';
+import { FixtureComponent } from './fixture/fixture.component';
 //import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
@@ -17,7 +20,10 @@ import { FetchDataComponent } from './fetch-data/fetch-data.component';
     NavMenuComponent,
     HomeComponent,
     CounterComponent,
-    FetchDataComponent
+    FetchDataComponent,
+    TournamentComponent,
+    TeamComponent,
+    FixtureComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -26,9 +32,12 @@ import { FetchDataComponent } from './fetch-data/fetch-data.component';
     ReactiveFormsModule,
     //ToastrModule.forRoot(),
     RouterModule.forRoot([
-      { path: '', component: HomeComponent, pathMatch: 'full' },
+      { path: '', component: TournamentComponent, pathMatch: 'full' },
       { path: 'counter', component: CounterComponent },
       { path: 'fetch-data', component: FetchDataComponent },
+      { path: 'tournament', component: TournamentComponent},
+      { path: 'tournament/:id', component: TeamComponent},
+      { path: 'fixture', component: FixtureComponent},
     ])
   ],
   providers: [FixtureService],

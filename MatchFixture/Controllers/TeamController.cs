@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using MatchFixture.Dtos;
+using MatchFixture.Dtos.Teams;
 using MatchFixture.Interfaces;
 using MatchFixture.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -19,12 +18,15 @@ namespace MatchFixture.Controllers
     public class TeamController : ControllerBase
     {
         private readonly ITeamRepository _teamRepository;
+        private readonly ITournamentRepository _tournamentRepository;
 
         public TeamController(
-            ITeamRepository teamRepository
+            ITeamRepository teamRepository,
+            ITournamentRepository tournamentRepository
             )
         {
             _teamRepository = teamRepository;
+            _tournamentRepository = tournamentRepository;
         }
 
         [HttpGet]
@@ -36,17 +38,29 @@ namespace MatchFixture.Controllers
 
         [HttpPost]
         [ActionName("CreateTeam")]
-        public IActionResult CreateTeam([FromBody] TeamDto input)
+        public IActionResult CreateTeam([FromBody] CreateTeamDto input)
         {
             try
             {
-                var team = new Team()
-                {
-                    Name = input.Name
-                };
+                var _tournament = _tournamentRepository.GetSingle(input.TournamentId);
 
-                _teamRepository.Add(team);
-                _teamRepository.Commit();
+                if(_tournament != null)
+                {
+                    var team = new Team()
+                    {
+                        Name = input.Name,
+                        Tournament = _tournament,
+                        CreatedOn = DateTime.UtcNow
+                    };
+
+                    _teamRepository.Add(team);
+                    _teamRepository.Commit();
+                }
+                else
+                {
+                    BadRequest("Tournament Not Found");
+                }
+                
 
                 return Ok();
             }
@@ -58,7 +72,7 @@ namespace MatchFixture.Controllers
 
         [HttpPut]
         [ActionName("UpdateTeamById")]
-        public IActionResult UpdateTeamById(int id, [FromBody] TeamDto input)
+        public IActionResult UpdateTeamById(int id, [FromBody] UpdateTeamDto input)
         {
             if (ModelState.IsValid)
             {
@@ -88,7 +102,6 @@ namespace MatchFixture.Controllers
             }
             return Ok("");
         }
-
 
         [HttpGet]
         [ActionName("DeleteTeamById")]

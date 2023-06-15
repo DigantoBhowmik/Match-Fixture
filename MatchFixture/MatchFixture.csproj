@@ -33,6 +33,8 @@
     <None Remove="Models\" />
     <None Remove="Interfaces\" />
     <None Remove="Repositories\" />
+    <None Remove="Dtos\Tournaments\" />
+    <None Remove="Dtos\Teams\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -41,6 +43,8 @@
     <Folder Include="Models\" />
     <Folder Include="Interfaces\" />
     <Folder Include="Repositories\" />
+    <Folder Include="Dtos\Tournaments\" />
+    <Folder Include="Dtos\Teams\" />
   </ItemGroup>
     <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
     <!-- Ensure Node.js is installed -->

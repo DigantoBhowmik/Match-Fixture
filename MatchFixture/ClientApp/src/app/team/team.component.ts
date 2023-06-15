@@ -1,20 +1,17 @@
-import { TeamDto } from './../services/team/team.model';
+import { CreateTeamDto, TeamDto, UpdateTeamDto } from './../services/team/team.model';
 import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TeamService } from '../services/team';
 import { FixtureDto, FixtureService } from '../services/fixture';
-//import { ToastrService } from 'ngx-toastr';
-interface Fixture {
-  homeTeam: string;
-  awayTeam: string;
-}
-@Component({
-  selector: 'app-home',
-  templateUrl: './home.component.html',
-})
+import { ActivatedRoute, Params } from '@angular/router';
 
-export class HomeComponent implements OnInit {
+@Component({
+  selector: 'app-team',
+  templateUrl: './team.component.html',
+  styleUrls: ['./team.component.css']
+})
+export class TeamComponent {
   @ViewChild('closebutton') closebutton : ElementRef;
   fixtures: FixtureDto[] = [];
   form: FormGroup;
@@ -26,20 +23,26 @@ export class HomeComponent implements OnInit {
 
   teams: TeamDto[] = [];
   teamForEdit: TeamDto;
- 
+  id: any;
 
   isEdit = false;
 
   constructor(private fb: FormBuilder, 
     private modalService: NgbModal, 
     private teamService: TeamService,
-    private fixtureService: FixtureService
+    private fixtureService: FixtureService,
+    private route: ActivatedRoute
     //@Inject(ToastrService) private toastr: ToastrService
     ) {
   }
 
 
   ngOnInit() {
+    this.route.params.forEach((params: Params) => {
+      if (params["id"] !== undefined && params["id"] != "-1") {
+        this.id = parseInt(params["id"]);
+      }
+    });
     this.buildForm();
     // this.generateFixtures();
     this.getTeamList();
@@ -112,9 +115,8 @@ export class HomeComponent implements OnInit {
     this.isSubmitted = false;
 
     if (this.teamForEdit && this.isEdit) {
-      let team: TeamDto = {
-        name: this.form.value.name,
-        id:0
+      let team: UpdateTeamDto = {
+        name: this.form.value.name
       }
       this.teamService.updateTeamById(this.teamForEdit.id, team).subscribe(x => {
         this.isModalOpen = false;
@@ -128,7 +130,11 @@ export class HomeComponent implements OnInit {
       });
     }
     else {
-      this.teamService.addTeam(this.form.value).subscribe(x => {
+      let team: CreateTeamDto = {
+        name: this.form.value.name,
+        tournamentId:this.id
+      }
+      this.teamService.addTeam(team).subscribe(x => {
         this.isModalOpen = false;
         //this.toastr.success("Successfully added");
         this.isSubmitting = false;
@@ -155,83 +161,4 @@ export class HomeComponent implements OnInit {
   resetForm() {
     this.form.reset();
   }
-  // generateFixtures() {
-  //   var numberOfRounds = this.teams.length - 1;
-  //   let fixtureCopy = [];
-  //     for (let i = 0; i < numberOfRounds; i++) {
-  //       const fixturesInRound1 = [];
-  //       const fixturesInRound2 = [];
-
-  //       for (var j = 0; j < this.teams.length / 2; j++) {
-  //         const homeTeam = this.teams[j];
-  //         const awayTeam = this.teams[this.teams.length - 1 - j];
-  //         let fixture = {} as Fixture
-  //         let fixture1 = {} as Fixture
-  //         fixture = {
-  //           homeTeam: homeTeam,
-  //           awayTeam: awayTeam,
-  //         };
-  //         fixture1 = {
-  //           homeTeam: awayTeam,
-  //           awayTeam: homeTeam,
-  //         };
-  //         fixturesInRound1.push(fixture);
-  //         fixturesInRound2.push(fixture1);
-  //       }
-  //       fixtureCopy.push(fixturesInRound1);
-  //       fixtureCopy.push(fixturesInRound2);
-  //       this.teams.splice(1, 0, this.teams[numberOfRounds]);
-  //       this.teams.pop();
-  //       this.fixtures = fixtureCopy;
-  //   }
-  //let numberOfTeams = this.teams.length;
-  //let gameWeek = (numberOfTeams - 1) * 2;
-
-  //let fixtureCopy = [];
-
-  //for (let round = 1; round <= gameWeek; round++) {
-  //  const fixturesInRound = [];
-
-  //  // Shuffle the teams randomly
-  //  // const shuffledTeams = this.shuffleArray(this.teams.slice());
-
-  //  for (let i = 0; i < numberOfTeams / 2; i++) {
-  //    const homeTeam = this.teams[i];
-  //    const awayTeam = this.teams[i + numberOfTeams / 2];
-  //    let fixture = {} as Fixture
-  //    if (round > gameWeek / 2) {
-  //      fixture = {
-  //        homeTeam: awayTeam,
-  //        awayTeam: homeTeam,
-  //      };
-  //    }
-  //    else {
-  //      fixture = {
-  //        homeTeam,
-  //        awayTeam,
-  //      };
-
-  //    }
-  //    fixturesInRound.push(fixture);
-  //  }
-
-  //  fixtureCopy.push(fixturesInRound);
-
-  //  // Rotate the teams in the second half for the next round
-  //  this.teams.splice(0, 0, this.teams.pop()!);
-  //}
-  //this.fixtures = fixtureCopy;
-  //console.log(fixtureCopy)
-  // }
-  // private shuffleArray<T>(array: T[]): T[] {
-  //   const newArray = array.slice();
-
-  //   for (let i = newArray.length - 1; i > 0; i--) {
-  //     const j = Math.floor(Math.random() * (i + 1));
-  //     [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
-  //   }
-
-  //   return newArray;
-  // }
 }
-

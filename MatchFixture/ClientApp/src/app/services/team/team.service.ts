@@ -3,7 +3,7 @@ import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { map } from "rxjs/operators";
 import { environment } from "src/environments/environment";
-import { TeamDto } from "./team.model";
+import { CreateTeamDto, TeamDto, UpdateTeamDto } from "./team.model";
 
 @Injectable({
   providedIn: "root",
@@ -17,18 +17,17 @@ export class TeamService {
       "Content-Type": "application/json; charset=utf-8",
     });
   }
+  public getTeams() {
+    return this.http.get<TeamDto[]>(this.baseUrl + "/GetTeams");
+  }
 
-  public addTeam(data: TeamDto) {
+  public addTeam(data: CreateTeamDto) {
     return this.http.post(this.baseUrl + "/CreateTeam", data, {
       headers: this.headers,
     });
   }
 
-  public getTeams() {
-    return this.http.get<TeamDto[]>(this.baseUrl + "/GetTeams");
-  }
-
-  public updateTeamById(id: number, data: TeamDto) {
+  public updateTeamById(id: number, data: UpdateTeamDto) {
     return this.http.put(
       this.baseUrl + "/UpdateTeamById?id=" + id, data, {
       headers: this.headers

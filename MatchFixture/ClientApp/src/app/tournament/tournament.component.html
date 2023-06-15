@@ -1,0 +1,62 @@
+<h2 id="tableLabel">Tournament Management</h2>
+<hr>
+<div>
+  <div class="input-group-append" style="margin-bottom: 8px; ">
+      <button class="btn btn-primary" type="button" (click)="add(tournamentModal)">Add Tournament</button>
+  </div>
+
+</div>
+
+<table class='table table-striped' aria-labelledby="tableLabel" *ngIf="tournaments">
+    <thead>
+      <tr>
+        <th>Sl. No.</th>
+        <th>Name</th>
+        <!-- <th>Creation Time</th> -->
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of tournaments; let i = index">
+        <td>{{ i + 1}}</td>
+        <td>{{ item.name }}</td>
+        <!-- <td>{{ item.creationTime }}</td> -->
+        <td>
+            <a class="mx-2" (click)="edit(item, tournamentModal)"><img src="assets/images/icons/edit.svg" alt="" /></a>
+            <a class="mx-2" (click)="delete(item.id)"><img src="assets/images/icons/trash.svg" alt="" /></a>
+            <button (click)="teamAdd(item.id)" class="btn-primary" type="button">Add Team</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+
+
+<ng-template #tournamentModal let-modal>
+  <div class="modal-header">
+      <h4 class="modal-title" id="question-title">{{isEdit ? 'Edit Tournament': 'New Tournament'}}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="form" novalidate>
+      <div class="form-group">
+        <div class="input-data">
+            <label>Name</label><span style="color: red;">*</span>
+          <input type="text" class="form-control" name="name" id="name" formControlName="name" placeholder="Tournament name" required>
+        </div>
+        <div
+          *ngIf="signUpData.name.invalid && (signUpData.name.dirty || signUpData.name.touched || isSubmitted) && signUpData.name.errors?.required"
+          class="alert-danger-text"> Name is required!
+        </div>
+      </div>
+      <div class="button">
+        <button class="btn btn-primary" id="closeModal" (click)="onSubmit()"
+          [disabled]="form.invalid && isSubmitting">
+          <span>Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</ng-template>
