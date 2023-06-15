@@ -1,7 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
 
 /* Provide sufficient contrast against white background */
-/*@import '~ngx-toastr/toastr.css';  */
+/* @import "~bootstrap/dist/css/bootstrap.css"; */
+@import 'ngx-toastr/toastr';
 a {
   color: #0366d6;
 }
@@ -29,4 +30,5 @@ code {
     }
   }
 }
+
 

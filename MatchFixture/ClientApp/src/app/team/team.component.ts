@@ -5,6 +5,7 @@ import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TeamService } from '../services/team';
 import { FixtureDto, FixtureService } from '../services/fixture';
 import { ActivatedRoute, Params } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-team',
@@ -31,8 +32,8 @@ export class TeamComponent {
     private modalService: NgbModal, 
     private teamService: TeamService,
     private fixtureService: FixtureService,
-    private route: ActivatedRoute
-    //@Inject(ToastrService) private toastr: ToastrService
+    private route: ActivatedRoute,
+    private toastr: ToastrService
     ) {
   }
 
@@ -49,7 +50,7 @@ export class TeamComponent {
   }
 
   getTeamList() {
-    this.teamService.getTeams().subscribe(res => {
+    this.teamService.getTeams(this.id).subscribe(res => {
       this.teams = res;
     });
   }
@@ -120,12 +121,13 @@ export class TeamComponent {
       }
       this.teamService.updateTeamById(this.teamForEdit.id, team).subscribe(x => {
         this.isModalOpen = false;
-        //this.toastr.success("Update successfully");
+        this.toastr.success("Update successfully");
         this.isSubmitting = false;
         this.resetForm();
+        this.modalService.dismissAll();
         this.getTeamList();
       }, error => {
-        //this.toastr.error(error.error);
+        this.toastr.error(error.error);
         this.isSubmitting = false;
       });
     }
@@ -136,13 +138,14 @@ export class TeamComponent {
       }
       this.teamService.addTeam(team).subscribe(x => {
         this.isModalOpen = false;
-        //this.toastr.success("Successfully added");
+        this.toastr.success("Successfully added");
         this.isSubmitting = false;
         this.resetForm();
         this.getTeamList();
-        this.closebutton.nativeElement.click();
+        this.modalService.dismissAll();
       }, error => {
         this.isSubmitting = false;
+        this.toastr.error(error.error);
       });
     }
     

@@ -26,7 +26,7 @@ namespace MatchFixture.Repositories
             return _context.Set<T>().FirstOrDefault(x => x.Id == id && x.IsDeleted != true);
         }
 
-        public virtual IEnumerable<T> FindBy(Expression<Func<T, bool>> predicate)
+        public virtual IEnumerable<T> Where(Expression<Func<T, bool>> predicate)
         {
             return _context.Set<T>().Where(predicate);
         }

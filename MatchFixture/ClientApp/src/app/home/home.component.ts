@@ -40,121 +40,121 @@ export class HomeComponent implements OnInit {
 
 
   ngOnInit() {
-    this.buildForm();
+    // this.buildForm();
     // this.generateFixtures();
-    this.getTeamList();
+    // this.getTeamList();
   }
 
-  getTeamList() {
-    this.teamService.getTeams().subscribe(res => {
-      this.teams = res;
-    });
-  }
+  // getTeamList() {
+  //   this.teamService.getTeams().subscribe(res => {
+  //     this.teams = res;
+  //   });
+  // }
 
-  getFixtures() {
-    this.fixtureService.genarateFixture().subscribe(result => {
-      console.log(result);
-      this.fixtures = result;
-    })
-  }
+  // getFixtures() {
+  //   this.fixtureService.genarateFixture().subscribe(result => {
+  //     console.log(result);
+  //     this.fixtures = result;
+  //   })
+  // }
 
-  buildForm() {
-    this.name = new FormControl('', [Validators.required]);
-    this.form = new FormGroup({
-      name: this.name,
-    });
-  }
+  // buildForm() {
+  //   this.name = new FormControl('', [Validators.required]);
+  //   this.form = new FormGroup({
+  //     name: this.name,
+  //   });
+  // }
 
-  add(teamModal: any) {
-    this.buildForm();
-    //this.teamForEdit = null;
-    this.isEdit = false;
-    this.modalService.open(teamModal, { ariaLabelledBy: '' }).result.then((result) => {
-      this.closeResult = `Closed with: ${result}`;
-    }, (reason) => {
-      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-    });
-  }
+  // add(teamModal: any) {
+  //   this.buildForm();
+  //   //this.teamForEdit = null;
+  //   this.isEdit = false;
+  //   this.modalService.open(teamModal, { ariaLabelledBy: '' }).result.then((result) => {
+  //     this.closeResult = `Closed with: ${result}`;
+  //   }, (reason) => {
+  //     this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+  //   });
+  // }
 
-  edit(contents: TeamDto, modalItem: any) {
-    this.isEdit = true;
-    this.teamForEdit = contents;
-    this.name = new FormControl(this.teamForEdit.name, [Validators.required]);
-    this.form = new FormGroup({
-      name: this.name
-    });
-    this.modalService.open(modalItem, { ariaLabelledBy: 'team-title' }).result.then((result) => {
-      this.closeResult = `Closed with: ${result}`;
-    }, (reason) => {
-      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-    });
-  }
+  // edit(contents: TeamDto, modalItem: any) {
+  //   this.isEdit = true;
+  //   this.teamForEdit = contents;
+  //   this.name = new FormControl(this.teamForEdit.name, [Validators.required]);
+  //   this.form = new FormGroup({
+  //     name: this.name
+  //   });
+  //   this.modalService.open(modalItem, { ariaLabelledBy: 'team-title' }).result.then((result) => {
+  //     this.closeResult = `Closed with: ${result}`;
+  //   }, (reason) => {
+  //     this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+  //   });
+  // }
 
-  private getDismissReason(reason: any): string {
-    if (reason === ModalDismissReasons.ESC) {
-      return 'by pressing ESC';
-    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-      return 'by clicking on a backdrop';
-    } else {
-      return `with: ${reason}`;
-    }
-  }
+  // private getDismissReason(reason: any): string {
+  //   if (reason === ModalDismissReasons.ESC) {
+  //     return 'by pressing ESC';
+  //   } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+  //     return 'by clicking on a backdrop';
+  //   } else {
+  //     return `with: ${reason}`;
+  //   }
+  // }
 
-  get signUpData() { return this.form.controls; }
+  // get signUpData() { return this.form.controls; }
 
-  onSubmit() {
-    this.isModalOpen = true;
-    this.isSubmitted = true;
-    if (this.form.invalid) {
-      return;
-    }
-    this.isSubmitting = true;
-    this.isSubmitted = false;
+  // onSubmit() {
+  //   this.isModalOpen = true;
+  //   this.isSubmitted = true;
+  //   if (this.form.invalid) {
+  //     return;
+  //   }
+  //   this.isSubmitting = true;
+  //   this.isSubmitted = false;
 
-    if (this.teamForEdit && this.isEdit) {
-      let team: TeamDto = {
-        name: this.form.value.name,
-        id:0
-      }
-      this.teamService.updateTeamById(this.teamForEdit.id, team).subscribe(x => {
-        this.isModalOpen = false;
-        //this.toastr.success("Update successfully");
-        this.isSubmitting = false;
-        this.resetForm();
-        this.getTeamList();
-      }, error => {
-        //this.toastr.error(error.error);
-        this.isSubmitting = false;
-      });
-    }
-    else {
-      this.teamService.addTeam(this.form.value).subscribe(x => {
-        this.isModalOpen = false;
-        //this.toastr.success("Successfully added");
-        this.isSubmitting = false;
-        this.resetForm();
-        this.getTeamList();
-        this.closebutton.nativeElement.click();
-      }, error => {
-        this.isSubmitting = false;
-      });
-    }
+  //   if (this.teamForEdit && this.isEdit) {
+  //     let team: TeamDto = {
+  //       name: this.form.value.name,
+  //       id:0
+  //     }
+  //     this.teamService.updateTeamById(this.teamForEdit.id, team).subscribe(x => {
+  //       this.isModalOpen = false;
+  //       //this.toastr.success("Update successfully");
+  //       this.isSubmitting = false;
+  //       this.resetForm();
+  //       this.getTeamList();
+  //     }, error => {
+  //       //this.toastr.error(error.error);
+  //       this.isSubmitting = false;
+  //     });
+  //   }
+  //   else {
+  //     this.teamService.addTeam(this.form.value).subscribe(x => {
+  //       this.isModalOpen = false;
+  //       //this.toastr.success("Successfully added");
+  //       this.isSubmitting = false;
+  //       this.resetForm();
+  //       this.getTeamList();
+  //       this.closebutton.nativeElement.click();
+  //     }, error => {
+  //       this.isSubmitting = false;
+  //     });
+  //   }
     
-  }
+  // }
 
-  delete(id: any) {
-    const result = confirm('Do you want to delete Team with id: ' + id);
-    if (result) {
-      this.teamService.deleteTeamById(id).subscribe(x => {
-        //this.toastr.error("successfully deleted");
-        this.getTeamList();
-      });
-    }
-  }
+  // delete(id: any) {
+  //   const result = confirm('Do you want to delete Team with id: ' + id);
+  //   if (result) {
+  //     this.teamService.deleteTeamById(id).subscribe(x => {
+  //       //this.toastr.error("successfully deleted");
+  //       this.getTeamList();
+  //     });
+  //   }
+  // }
 
-  resetForm() {
-    this.form.reset();
-  }
+  // resetForm() {
+  //   this.form.reset();
+  // }
   // generateFixtures() {
   //   var numberOfRounds = this.teams.length - 1;
   //   let fixtureCopy = [];

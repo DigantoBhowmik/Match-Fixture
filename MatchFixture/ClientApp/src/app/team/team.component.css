@@ -1,3 +1,8 @@
 .alert-danger-text{
     color: red;
 }
+.action{
+    a {
+      cursor: pointer;
+    }
+}

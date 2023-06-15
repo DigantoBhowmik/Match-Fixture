@@ -31,9 +31,10 @@ namespace MatchFixture.Controllers
 
         [HttpGet]
         [ActionName("GetTeams")]
-        public List<Team> GetTeams()
+        public List<Team> GetTeams(int tournamentId)
         {
-            return _teamRepository.GetAll().ToList();
+            var teamList = _teamRepository.Where(x => x.Tournament.Id == tournamentId).ToList();
+            return teamList;
         }
 
         [HttpPost]
@@ -78,7 +79,7 @@ namespace MatchFixture.Controllers
             {
                 try
                 {
-                    var _team = _teamRepository.FindBy(x => x.Id == id).FirstOrDefault();
+                    var _team = _teamRepository.Where(x => x.Id == id).FirstOrDefault();
                     if (_team == null)
                     {
                         return BadRequest();
@@ -107,7 +108,7 @@ namespace MatchFixture.Controllers
         [ActionName("DeleteTeamById")]
         public IActionResult DeleteTeamById(int? id)
         {
-            var _team = _teamRepository.FindBy(x => x.Id == id).FirstOrDefault();
+            var _team = _teamRepository.Where(x => x.Id == id).FirstOrDefault();
 
             if (_team == null)
             {

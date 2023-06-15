@@ -11,8 +11,12 @@ import { CounterComponent } from './counter/counter.component';
 import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { TournamentComponent } from './tournament/tournament.component';
 import { TeamComponent } from './team/team.component';
+
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FixtureComponent } from './fixture/fixture.component';
-//import { ToastrModule } from 'ngx-toastr';
+import { ToastrModule } from 'ngx-toastr';
+
 
 @NgModule({
   declarations: [
@@ -30,7 +34,8 @@ import { FixtureComponent } from './fixture/fixture.component';
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-    //ToastrModule.forRoot(),
+    BrowserAnimationsModule,
+    ToastrModule.forRoot(),
     RouterModule.forRoot([
       { path: '', component: TournamentComponent, pathMatch: 'full' },
       { path: 'counter', component: CounterComponent },
@@ -40,6 +45,7 @@ import { FixtureComponent } from './fixture/fixture.component';
       { path: 'fixture', component: FixtureComponent},
     ])
   ],
+  //exports: [ToastrModule],
   providers: [FixtureService],
   bootstrap: [AppComponent]
 })

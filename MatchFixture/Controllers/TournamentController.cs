@@ -61,7 +61,7 @@ namespace MatchFixture.Controllers
             {
                 try
                 {
-                    var _tournament = _tournamentRepository.FindBy(x => x.Id == id).FirstOrDefault();
+                    var _tournament = _tournamentRepository.Where(x => x.Id == id).FirstOrDefault();
                     if (_tournament == null)
                     {
                         return BadRequest();
@@ -91,7 +91,7 @@ namespace MatchFixture.Controllers
         [ActionName("DeleteTournamentById")]
         public IActionResult DeleteTournamentById(int? id)
         {
-            var _tournament = _tournamentRepository.FindBy(x => x.Id == id).FirstOrDefault();
+            var _tournament = _tournamentRepository.Where(x => x.Id == id).FirstOrDefault();
 
             if (_tournament == null)
             {

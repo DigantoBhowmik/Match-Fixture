@@ -4,6 +4,7 @@ import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FixtureDto, FixtureService } from '../services/fixture';
 import { CreateTournamentDto, TournamentDto, TournamentService } from '../services/tournament';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-tournament',
@@ -27,7 +28,8 @@ export class TournamentComponent {
     private modalService: NgbModal, 
     private tournamentService: TournamentService,
     private fixtureService: FixtureService,
-    private router: Router
+    private router: Router,
+    private toastr: ToastrService
     //@Inject(ToastrService) private toastr: ToastrService
     ) {
   }
@@ -103,25 +105,29 @@ export class TournamentComponent {
       }
       this.tournamentService.updateTournamentById(this.tournamnetForEdit.id, tournamnent).subscribe(x => {
         this.isModalOpen = false;
-        //this.toastr.success("Update successfully");
+        this.toastr.success("Update successfully");
         this.isSubmitting = false;
         this.resetForm();
+        this.modalService.dismissAll();
         this.getTournamentList();
       }, error => {
-        //this.toastr.error(error.error);
+        this.modalService.dismissAll();
+        this.toastr.error(error.error);
         this.isSubmitting = false;
       });
     }
     else {
       this.tournamentService.addTournament(this.form.value).subscribe(x => {
         this.isModalOpen = false;
-        //this.toastr.success("Successfully added");
+        this.toastr.success("Successfully added");
         this.isSubmitting = false;
         this.resetForm();
         this.getTournamentList();
-        this.closebutton.nativeElement.click();
+        this.modalService.dismissAll();
       }, error => {
+        this.modalService.dismissAll();
         this.isSubmitting = false;
+        this.toastr.error(error.error);
       });
     }
     
@@ -131,7 +137,7 @@ export class TournamentComponent {
     const result = confirm('Do you want to delete Tournament with id: ' + id);
     if (result) {
       this.tournamentService.deleteTournamentById(id).subscribe(x => {
-        //this.toastr.error("successfully deleted");
+        this.toastr.error("Successfully deleted");
         this.getTournamentList();
       });
     }

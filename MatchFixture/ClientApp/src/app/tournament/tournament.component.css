@@ -1,3 +1,26 @@
 .alert-danger-text{
     color: red;
 }
+ /* Define the grid container */
+ .grid-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Three equal columns */
+    grid-gap: 10px; /* Gap between grid items */
+  }
+  
+  /* Define the grid items */
+  .grid-item {
+    background-color: #ccc;
+    padding: 42px;
+    border-radius: 5px;
+    text-align: center;
+    cursor: pointer;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4); /* Add shadow effect */
+    transition: background-color 0.3s ease; /* Add transition effect */
+  }
+
+  /* Define the hover effect */
+  .grid-item:hover {
+    background-color: #3366cc; /* Primary color for hover */
+    color: #fff; /* Text color for hover */
+  }

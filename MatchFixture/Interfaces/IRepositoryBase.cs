@@ -8,7 +8,7 @@ namespace MatchFixture.Interfaces
     {
         IEnumerable<T> GetAll();
         T GetSingle(int id);
-        IEnumerable<T> FindBy(Expression<Func<T, bool>> predicate);
+        IEnumerable<T> Where(Expression<Func<T, bool>> predicate);
         void Add(T entity);
         void Update(T entity);
         void Delete(T entity);

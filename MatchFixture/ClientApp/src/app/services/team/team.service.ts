@@ -17,8 +17,10 @@ export class TeamService {
       "Content-Type": "application/json; charset=utf-8",
     });
   }
-  public getTeams() {
-    return this.http.get<TeamDto[]>(this.baseUrl + "/GetTeams");
+  public getTeams(id: number) {
+    return this.http.get<TeamDto[]>(this.baseUrl + "/GetTeams?tournamentId=" + id,{
+      headers: this.headers
+    });
   }
 
   public addTeam(data: CreateTeamDto) {
