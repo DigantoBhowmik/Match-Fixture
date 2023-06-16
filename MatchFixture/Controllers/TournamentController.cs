@@ -26,9 +26,23 @@ namespace MatchFixture.Controllers
 
         [HttpGet]
         [ActionName("GetTournaments")]
-        public List<Tournament> GetTournaments()
+        public List<TournamentDto> GetTournaments()
         {
-            return _tournamentRepository.GetAll().ToList();
+            var tournaments = _tournamentRepository.GetAll().ToList();
+
+            var returnResult = new List<TournamentDto>();
+
+            tournaments.ForEach(x =>
+            {
+                returnResult.Add(new TournamentDto
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    StartMonth = x.StartMonth.Month.ToString("00"),
+                    EndMonth = x.EndMonth.Month.ToString("00")
+                });
+            });
+            return returnResult;
         }
 
         [HttpPost]
@@ -37,9 +51,14 @@ namespace MatchFixture.Controllers
         {
             try
             {
+                var startDate = new DateTime(2023, int.Parse(input.StartMonth), 1);
+                var endDate = startDate.AddMonths(int.Parse(input.EndMonth) - int.Parse(input.StartMonth) + 1);
+                endDate = endDate.AddSeconds(-1);
                 var tournament = new Tournament()
                 {
-                    Name = input.Name
+                    Name = input.Name,
+                    StartMonth = startDate,
+                    EndMonth = endDate
                 };
 
                 _tournamentRepository.Add(tournament);
@@ -68,7 +87,12 @@ namespace MatchFixture.Controllers
                     }
                     if (_tournament != null)
                     {
+                        var startDate = new DateTime(2023, int.Parse(input.StartMonth), 1);
+                        var endDate = startDate.AddMonths(int.Parse(input.EndMonth) - int.Parse(input.StartMonth) + 1);
+                        endDate = endDate.AddSeconds(-1);
                         _tournament.Name = input.Name;
+                        _tournament.StartMonth = startDate;
+                        _tournament.EndMonth = endDate;
                     }
 
                     _tournamentRepository.Update(_tournament);
@@ -76,7 +100,7 @@ namespace MatchFixture.Controllers
                 }
                 catch (Exception ex)
                 {
-
+                    return BadRequest(ex.Message);
                 }
             }
             else if (!ModelState.IsValid)

@@ -16,6 +16,11 @@
         <th>Action</th>
       </tr>
     </thead>
+    <tbody  *ngIf="teams.length == 0">
+        <tr>
+            <td colspan="6" class="text-center">No data found</td>
+        </tr>
+    </tbody>
     <tbody>
         <tr *ngFor="let item of teams; let i = index">
             <td>{{ i + 1}}</td>

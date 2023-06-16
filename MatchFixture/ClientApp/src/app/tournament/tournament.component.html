@@ -1,18 +1,17 @@
 <h2 id="tableLabel">Tournament Management</h2>
 <hr>
 <div>
-  <div class="input-group-append" style="margin-bottom: 8px; ">
+  <div class="input-group-append">
       <button class="btn btn-primary" type="button" (click)="add(tournamentModal)">Add Tournament</button>
   </div>
 
 </div>
 
-<table class='table table-striped' aria-labelledby="tableLabel" *ngIf="tournaments">
+<!-- <table class='table table-striped' aria-labelledby="tableLabel" *ngIf="tournaments">
     <thead>
       <tr>
         <th>Sl. No.</th>
         <th>Name</th>
-        <!-- <th>Creation Time</th> -->
         <th>Action</th>
       </tr>
     </thead>
@@ -20,7 +19,6 @@
       <tr *ngFor="let item of tournaments; let i = index">
         <td>{{ i + 1}}</td>
         <td>{{ item.name }}</td>
-        <!-- <td>{{ item.creationTime }}</td> -->
         <td>
             <a class="mx-2" (click)="edit(item, tournamentModal)"><img src="assets/images/icons/edit.svg" alt="" /></a>
             <a class="mx-2" (click)="delete(item.id)"><img src="assets/images/icons/trash.svg" alt="" /></a>
@@ -28,24 +26,32 @@
         </td>
       </tr>
     </tbody>
-  </table>
-  <div class="grid-container">
-    <div class="grid-item" onclick="handleClick(1)">1</div>
-    <div class="grid-item" onclick="handleClick(2)">2</div>
-    <div class="grid-item" onclick="handleClick(3)">3</div>
-    <div class="grid-item" onclick="handleClick(4)">4</div>
-    <div class="grid-item" onclick="handleClick(5)">5</div>
-    <div class="grid-item" onclick="handleClick(6)">6</div>
-    <div class="grid-item" onclick="handleClick(7)">7</div>
-    <div class="grid-item" onclick="handleClick(8)">8</div>
-    <div class="grid-item" onclick="handleClick(9)">9</div>
+  </table> -->
+  <div class="rectangle row"  *ngFor="let item of tournaments">
+    <div class="col-9" (click)="teamAdd(item.id)">
+        <h3 class="name">{{ item.name }}</h3>
+    </div>
+    <div class="col-3">
+        <div class="right-item">
+            <a class="mx-2" (click)="edit(item, tournamentModal)"><img src="assets/images/icons/edit.svg" alt="" /></a>
+            <a class="mx-2" (click)="delete(item.id)"><img src="assets/images/icons/trash.svg" alt="" /></a>
+        </div>
+    </div>
+    <div class="col-9">
+        <span>Start from {{getMonthName(item.startMonth)}} and End at {{getMonthName(item.endMonth)}}</span>
+    </div>
+    <div class=" col-3">
+        <div class="right-item" (click)="teamAdd(item.id)">
+            <a class="mx-2 arrow" ><img src="assets/images/icons/arrow.svg" alt="" /></a>
+        </div>
+    </div>
   </div>
 
 
 <ng-template #tournamentModal let-modal>
   <div class="modal-header">
       <h4 class="modal-title" id="question-title">{{isEdit ? 'Edit Tournament': 'New Tournament'}}</h4>
-    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+    <button type="button" class="close" aria-label="Close" (click) = "close(modal)">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
@@ -60,7 +66,34 @@
           *ngIf="signUpData.name.invalid && (signUpData.name.dirty || signUpData.name.touched || isSubmitted) && signUpData.name.errors?.required"
           class="alert-danger-text"> Name is required!
         </div>
+        <div class="form-group">
+            <label>Start Month</label>
+            <select class="form-control" formControlName="startMonth" >
+                <option value=''>Select start month</option>
+                <option value={{item.number}} *ngFor="let item of months">
+                {{ item.name }}
+                </option>
+            </select>
+            <div
+            *ngIf="signUpData.startMonth.invalid && (signUpData.startMonth.dirty || signUpData.startMonth.touched || isSubmitted) && signUpData.startMonth.errors?.required"
+            class="alert-danger-text"> Start month is required!
+            </div>
+        </div>
+        <div class="form-group">
+            <label>End Month</label>
+            <select class="form-control" formControlName="endMonth" >
+                <option value=''>Select end month</option>
+                <option value={{item.number}} *ngFor="let item of months">
+                {{ item.name }}
+                </option>
+            </select>
+            <div
+            *ngIf="signUpData.endMonth.invalid && (signUpData.endMonth.dirty || signUpData.endMonth.touched || isSubmitted) && signUpData.endMonth.errors?.required"
+            class="alert-danger-text"> End month is required!
+            </div>
+        </div>
       </div>
+      
       <div class="button">
         <button class="btn btn-primary" id="closeModal" (click)="onSubmit()"
           [disabled]="form.invalid && isSubmitting">

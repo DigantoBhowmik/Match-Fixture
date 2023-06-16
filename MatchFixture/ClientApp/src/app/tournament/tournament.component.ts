@@ -21,8 +21,23 @@ export class TournamentComponent {
   isSubmitting = false;
 
   tournaments: TournamentDto[] = [];
-  tournamnetForEdit: TournamentDto;
+  tournamnetForEdit = {} as TournamentDto;
   isEdit = false;
+
+  months = [
+    { name: "January", number: "01" },
+    { name: "February", number: "02" },
+    { name: "March", number: "03" },
+    { name: "April", number: "04" },
+    { name: "May", number: "05" },
+    { name: "June", number: "06" },
+    { name: "July", number: "07" },
+    { name: "August", number: "08" },
+    { name: "September", number: "09" },
+    { name: "October", number: "10" },
+    { name: "November", number: "11" },
+    { name: "December", number: "12" }
+  ];
 
   constructor(private fb: FormBuilder, 
     private modalService: NgbModal, 
@@ -35,27 +50,40 @@ export class TournamentComponent {
   }
 
   ngOnInit() {
-    this.buildForm();
+    // this.buildForm();
     // this.generateFixtures();
     this.getTournamentList();
   }
 
   getTournamentList() {
     this.tournamentService.getTournaments().subscribe(res => {
+      console.log(res)
       this.tournaments = res;
     });
   }
 
+  // buildForm() {
+  //   this.name = new FormControl('', [Validators.required]);
+  //   this.form = new FormGroup({
+  //     name: this.name,
+  //   });
+  // }
   buildForm() {
-    this.name = new FormControl('', [Validators.required]);
-    this.form = new FormGroup({
-      name: this.name,
+    this.form = this.fb.group({
+      name: [this.tournamnetForEdit.name || '', Validators.required],
+      startMonth: [this.tournamnetForEdit.startMonth || '', Validators.required],
+      endMonth: [this.tournamnetForEdit.endMonth || '', Validators.required],
     });
   }
 
+  getMonthName(monthNumber: any){
+    const monthObj = this.months.find(month => month.number === monthNumber);
+    return monthObj ? monthObj.name : null;
+  }
+
   add(tournamentModal: any) {
+    this.tournamnetForEdit = {} as TournamentDto;
     this.buildForm();
-    //this.teamForEdit = null;
     this.isEdit = false;
     this.modalService.open(tournamentModal, { ariaLabelledBy: '' }).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
@@ -67,10 +95,11 @@ export class TournamentComponent {
   edit(contents: TournamentDto, modalItem: any) {
     this.isEdit = true;
     this.tournamnetForEdit = contents;
-    this.name = new FormControl(this.tournamnetForEdit.name, [Validators.required]);
-    this.form = new FormGroup({
-      name: this.name
-    });
+    this.buildForm();
+    // this.name = new FormControl(this.tournamnetForEdit.name, [Validators.required]);
+    // this.form = new FormGroup({
+    //   name: this.name
+    // });
     this.modalService.open(modalItem, { ariaLabelledBy: 'team-title' }).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
@@ -88,7 +117,15 @@ export class TournamentComponent {
     }
   }
 
-  get signUpData() { return this.form.controls; }
+  close(modal: any){
+    this.isSubmitted = false;
+    modal.dismiss('Cross click');
+    this.form.reset();
+  }
+
+  get signUpData() { 
+    return this.form.controls; 
+  }
 
   onSubmit() {
     this.isModalOpen = true;
@@ -101,7 +138,9 @@ export class TournamentComponent {
 
     if (this.tournamnetForEdit && this.isEdit) {
       let tournamnent: CreateTournamentDto = {
-        name: this.form.value.name
+        name: this.form.value.name,
+        startMonth: this.form.value.startMonth,
+        endMonth: this.form.value.endMonth
       }
       this.tournamentService.updateTournamentById(this.tournamnetForEdit.id, tournamnent).subscribe(x => {
         this.isModalOpen = false;
@@ -137,7 +176,7 @@ export class TournamentComponent {
     const result = confirm('Do you want to delete Tournament with id: ' + id);
     if (result) {
       this.tournamentService.deleteTournamentById(id).subscribe(x => {
-        this.toastr.error("Successfully deleted");
+        this.toastr.error("Delete successfully");
         this.getTournamentList();
       });
     }

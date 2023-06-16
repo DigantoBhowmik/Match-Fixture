@@ -16,6 +16,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FixtureComponent } from './fixture/fixture.component';
 import { ToastrModule } from 'ngx-toastr';
+import { SidebarComponent } from './sidebar/sidebar.component';
 
 
 @NgModule({
@@ -27,7 +28,8 @@ import { ToastrModule } from 'ngx-toastr';
     FetchDataComponent,
     TournamentComponent,
     TeamComponent,
-    FixtureComponent
+    FixtureComponent,
+    SidebarComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
