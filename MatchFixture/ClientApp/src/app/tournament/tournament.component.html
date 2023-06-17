@@ -29,7 +29,7 @@
   </table> -->
   <div class="rectangle row"  *ngFor="let item of tournaments">
     <div class="col-9" (click)="teamAdd(item.id)">
-        <h3 class="name">{{ item.name }}</h3>
+        <h3 class="name">{{ item.name }}</h3><span >Competition type: {{item.competitionType == 0 ? 'League': ''}}</span>
     </div>
     <div class="col-3">
         <div class="right-item">
@@ -38,7 +38,7 @@
         </div>
     </div>
     <div class="col-9">
-        <span>Start from {{getMonthName(item.startMonth)}} and End at {{getMonthName(item.endMonth)}}</span>
+        <span>Start from {{getMonthName(item.startMonth)}}, {{item.startYear}} and End at {{getMonthName(item.endMonth)}}, {{item.endYear}}</span>
     </div>
     <div class=" col-3">
         <div class="right-item" (click)="teamAdd(item.id)">
@@ -67,29 +67,76 @@
           class="alert-danger-text"> Name is required!
         </div>
         <div class="form-group">
-            <label>Start Month</label>
-            <select class="form-control" formControlName="startMonth" >
-                <option value=''>Select start month</option>
-                <option value={{item.number}} *ngFor="let item of months">
-                {{ item.name }}
-                </option>
-            </select>
-            <div
-            *ngIf="signUpData.startMonth.invalid && (signUpData.startMonth.dirty || signUpData.startMonth.touched || isSubmitted) && signUpData.startMonth.errors?.required"
-            class="alert-danger-text"> Start month is required!
+            <label>Start From</label>
+            <div class="double-select">
+                <div class="select">
+                    <select class="form-control" formControlName="startMonth" >
+                        <option value=''>Select start month</option>
+                        <option value={{item.number}} *ngFor="let item of months">
+                        {{ item.name }}
+                        </option>
+                    </select>
+                    <div
+                    *ngIf="signUpData.startMonth.invalid && (signUpData.startMonth.dirty || signUpData.startMonth.touched || isSubmitted) && signUpData.startMonth.errors?.required"
+                    class="alert-danger-text"> Start month is required!
+                    </div>
+                </div>
+                <div class="select">
+                    <select class="form-control" formControlName="startYear" >
+                        <option value=''>Select start year</option>
+                        <option value={{item}} *ngFor="let item of years">
+                        {{ item }}
+                        </option>
+                    </select>
+                    <div
+                    *ngIf="signUpData.startYear.invalid && (signUpData.startYear.dirty || signUpData.startYear.touched || isSubmitted) && signUpData.startYear.errors?.required"
+                    class="alert-danger-text"> Start year is required!
+                    </div>
+                </div>
+                
             </div>
         </div>
         <div class="form-group">
-            <label>End Month</label>
-            <select class="form-control" formControlName="endMonth" >
-                <option value=''>Select end month</option>
-                <option value={{item.number}} *ngFor="let item of months">
-                {{ item.name }}
+            <label>End at</label>
+            <div class="double-select">
+                <div class="select">
+                    <select class="form-control" formControlName="endMonth" >
+                        <option value=''>Select end month</option>
+                        <option value={{item.number}} *ngFor="let item of months">
+                        {{ item.name }}
+                        </option>
+                    </select>
+                    <div
+                    *ngIf="signUpData.endMonth.invalid && (signUpData.endMonth.dirty || signUpData.endMonth.touched || isSubmitted) && signUpData.endMonth.errors?.required"
+                    class="alert-danger-text"> End month is required!
+                    </div>
+                </div>
+                <div class="select">
+                    <select class="form-control" formControlName="endYear" >
+                        <option value=''>Select end year</option>
+                        <option value={{item}} *ngFor="let item of years">
+                        {{ item }}
+                        </option>
+                    </select>
+                    <div
+                    *ngIf="signUpData.endYear.invalid && (signUpData.endYear.dirty || signUpData.endYear.touched || isSubmitted) && signUpData.endYear.errors?.required"
+                    class="alert-danger-text"> End year is required!
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Competition Type</label>
+            <select class="form-control" formControlName="competitionType" >
+                <option value = ''>Select Competition Type</option>
+                <option value=  1>
+                    League
                 </option>
             </select>
             <div
-            *ngIf="signUpData.endMonth.invalid && (signUpData.endMonth.dirty || signUpData.endMonth.touched || isSubmitted) && signUpData.endMonth.errors?.required"
-            class="alert-danger-text"> End month is required!
+            *ngIf="signUpData.competitionType.invalid && (signUpData.competitionType.dirty || signUpData.competitionType.touched || isSubmitted) && signUpData.competitionType.errors?.required"
+            class="alert-danger-text"> Competition Type is required!
             </div>
         </div>
       </div>

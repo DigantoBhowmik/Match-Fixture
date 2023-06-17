@@ -1,3 +1,4 @@
+import { CompetitionType } from './../services/tournament/competition-type.enum';
 import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -24,6 +25,7 @@ export class TournamentComponent {
   tournamnetForEdit = {} as TournamentDto;
   isEdit = false;
 
+
   months = [
     { name: "January", number: "01" },
     { name: "February", number: "02" },
@@ -39,6 +41,8 @@ export class TournamentComponent {
     { name: "December", number: "12" }
   ];
 
+  years: any;
+
   constructor(private fb: FormBuilder, 
     private modalService: NgbModal, 
     private tournamentService: TournamentService,
@@ -47,6 +51,15 @@ export class TournamentComponent {
     private toastr: ToastrService
     //@Inject(ToastrService) private toastr: ToastrService
     ) {
+      // Get the current year
+      const currentYear = new Date().getFullYear();
+
+      // Generate an array of the next 10 years
+      const yearsTemp = [];
+      for (let i = 0; i < 10; i++) {
+        yearsTemp.push(currentYear + i);
+      }
+      this.years = yearsTemp
   }
 
   ngOnInit() {
@@ -73,6 +86,9 @@ export class TournamentComponent {
       name: [this.tournamnetForEdit.name || '', Validators.required],
       startMonth: [this.tournamnetForEdit.startMonth || '', Validators.required],
       endMonth: [this.tournamnetForEdit.endMonth || '', Validators.required],
+      startYear: [this.tournamnetForEdit.startYear || '', Validators.required],
+      endYear: [this.tournamnetForEdit.endYear || '', Validators.required],
+      competitionType: [this.tournamnetForEdit.competitionType || '', Validators.required]
     });
   }
 
@@ -140,7 +156,10 @@ export class TournamentComponent {
       let tournamnent: CreateTournamentDto = {
         name: this.form.value.name,
         startMonth: this.form.value.startMonth,
-        endMonth: this.form.value.endMonth
+        endMonth: this.form.value.endMonth,
+        startYear: this.form.value.startYear,
+        endYear: this.form.value.endYear,
+        // competitionType: this.form.value.competitionType 
       }
       this.tournamentService.updateTournamentById(this.tournamnetForEdit.id, tournamnent).subscribe(x => {
         this.isModalOpen = false;

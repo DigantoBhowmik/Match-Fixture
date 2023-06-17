@@ -39,7 +39,10 @@ namespace MatchFixture.Controllers
                     Id = x.Id,
                     Name = x.Name,
                     StartMonth = x.StartMonth.Month.ToString("00"),
-                    EndMonth = x.EndMonth.Month.ToString("00")
+                    EndMonth = x.EndMonth.Month.ToString("00"),
+                    StartYear = x.StartMonth.Year,
+                    EndYear = x.EndMonth.Year,
+                    CompetitionType = x.CompetitionType
                 });
             });
             return returnResult;
@@ -47,18 +50,19 @@ namespace MatchFixture.Controllers
 
         [HttpPost]
         [ActionName("CreateTournament")]
-        public IActionResult CreateTournament([FromBody] CreateTournamentDto input)
-        {
+        public IActionResult CreateTournament([FromBody] CreateTournamentDto input)        {
             try
             {
-                var startDate = new DateTime(2023, int.Parse(input.StartMonth), 1);
+                var startDate = new DateTime(input.StartYear, int.Parse(input.StartMonth), 1);
                 var endDate = startDate.AddMonths(int.Parse(input.EndMonth) - int.Parse(input.StartMonth) + 1);
+                endDate = endDate.AddYears(input.EndYear - input.StartYear);
                 endDate = endDate.AddSeconds(-1);
                 var tournament = new Tournament()
                 {
                     Name = input.Name,
                     StartMonth = startDate,
-                    EndMonth = endDate
+                    EndMonth = endDate,
+                    CompetitionType = CompetitionType.League
                 };
 
                 _tournamentRepository.Add(tournament);
@@ -87,8 +91,9 @@ namespace MatchFixture.Controllers
                     }
                     if (_tournament != null)
                     {
-                        var startDate = new DateTime(2023, int.Parse(input.StartMonth), 1);
+                        var startDate = new DateTime(input.StartYear, int.Parse(input.StartMonth), 1);
                         var endDate = startDate.AddMonths(int.Parse(input.EndMonth) - int.Parse(input.StartMonth) + 1);
+                        endDate = endDate.AddYears(input.EndYear - input.StartYear);
                         endDate = endDate.AddSeconds(-1);
                         _tournament.Name = input.Name;
                         _tournament.StartMonth = startDate;
