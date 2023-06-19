@@ -1,0 +1,14 @@
+.sidebar {
+    position: fixed;
+    top: 58px;
+    left: 0;
+    height: 100%;
+    width: 10rem;
+    transition: all 0.5s ease;
+    z-index: 99;
+    overflow: hidden;
+}
+.rest-body {
+    padding-left: 150px;
+    width: 100%;
+}

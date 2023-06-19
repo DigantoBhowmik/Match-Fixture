@@ -1,8 +1,19 @@
-<body>
+<!-- <body>
   <app-nav-menu></app-nav-menu>
   <div class="container">
     <app-sidebar></app-sidebar>
     <router-outlet></router-outlet>
   </div>
 </body>
-
+ -->
+ <app-nav-menu></app-nav-menu>
+ <div class="container-fluid">
+    <div class="sidebar" style="background: #292d33;">
+      
+        <app-sidebar></app-sidebar>
+    </div>
+    
+    <div class="rest-body">
+      <router-outlet></router-outlet>
+    </div>
+</div>

@@ -2,6 +2,15 @@ a.navbar-brand {
   white-space: normal;
   text-align: center;
   word-break: break-all;
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 30px;
+  letter-spacing: 0.05em;
+  color: #222;
+}
+
+.header-name{
+  margin-left: -283px;
 }
 
 html {

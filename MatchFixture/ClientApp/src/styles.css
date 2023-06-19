@@ -3,6 +3,7 @@
 /* Provide sufficient contrast against white background */
 /* @import "~bootstrap/dist/css/bootstrap.css"; */
 @import 'ngx-toastr/toastr';
+
 a {
   color: #0366d6;
 }
@@ -17,13 +18,16 @@ code {
   border-color: #1861ac;
   float: left;
 }
+
 .common-table {
   .table {
     th {
       font-size: 16px;
     }
+
     td:last-child {
       width: 8%;
+
       a {
         cursor: pointer;
         margin-right: 7px;
@@ -31,16 +35,85 @@ code {
     }
   }
 }
-.input-group-append{
+
+.input-group-append {
   margin-bottom: 15px;
   float: right;
 }
-.button{
+
+.button {
   float: right;
 }
-.alert-danger-text{
+
+.alert-danger-text {
   color: red;
 }
 
 
+/* 
+.rest-body {
+  padding-left: 0px !important;
 
+  .submenu-body {
+    width: 100% !important;
+    padding-left: 0px !important;
+    margin-top: 55px;
+  }
+}
+
+.sidebar {
+  top: 0 !important;
+  left: -92px !important;
+
+  .logo {
+    display: none;
+  }
+
+  .logo-content {
+    position: fixed !important;
+    left: 15px;
+    top: 18px;
+    background-color: #e9f4ef;
+    width: 220px;
+    height: 60px;
+
+    text-align: center;
+    padding: 0 !important;
+    margin-top: 0 !important;
+    visibility: visible;
+    opacity: 1;
+    transition: visibility 0s linear 0s, opacity 300ms;
+
+    div {
+      background-color: #a9dec4;
+      width: 45px;
+      height: 45px;
+      border-radius: 4px;
+    }
+
+    img {
+      padding: 11px 13px;
+    }
+  }
+
+  .nav-container {
+    padding: 0px 18px !important;
+
+    .nav-list {
+      margin-top: 88px !important;
+
+      li {
+        margin-top: 10px;
+      }
+
+      .profile {
+        .side-toggle-divider {
+          top: 79px;
+          position: fixed;
+          left: 0px;
+          width: 250px !important;
+        }
+      }
+    }
+  }
+} */
