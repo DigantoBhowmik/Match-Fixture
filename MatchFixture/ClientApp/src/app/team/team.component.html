@@ -38,7 +38,8 @@
 
 <h2 id="tableLabel">Match Fixture</h2>
 <div class="input-group-append" style="margin-bottom: 8px; ">
-    <button class="btn btn-primary" type="button" (click)="getFixtures()">{{fixtures.length == 0 ? 'Genarate Fixture' : 'Genarate Again' }}</button>
+    <!-- <button class="btn btn-primary" type="button" (click)="getFixtures()">{{fixtures.length == 0 ? 'Genarate Fixture' : 'Genarate Again' }}</button> -->
+    <button class="btn btn-primary" type="button" (click)="getFixtures1()">{{fixtures.length == 0 ? 'Genarate Fixture' : 'Genarate Again' }}</button>
 </div>
 <div class="common-table">
     <table class='table table-striped' aria-labelledby="tableLabel" *ngIf="fixtures">

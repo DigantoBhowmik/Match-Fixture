@@ -1,1 +1,28 @@
-<p>fixture works!</p>
+<h2 id="tableLabel">Match Fixture</h2>
+<div class="input-group-append" style="margin-bottom: 8px; ">
+    <!-- <button class="btn btn-primary" type="button" (click)="getFixtures()">{{fixtures.length == 0 ? 'Genarate Fixture' : 'Genarate Again' }}</button> -->
+    <!-- <button class="btn btn-primary" type="button" (click)="getFixtures1()">{{fixtures.length == 0 ? 'Genarate Fixture' : 'Genarate Again' }}</button> -->
+</div>
+<div class="common-table">
+    <table class='table table-striped' aria-labelledby="tableLabel" *ngIf="fixtures">
+        <thead>
+          <tr>
+            <th>Match No.</th>
+            <th>Home Team</th>
+            <th>Away Team</th>
+          </tr>
+        </thead>
+        <tbody  *ngIf="fixtures.length == 0">
+            <tr>
+                <td colspan="6" class="text-center">No data found</td>
+            </tr>
+        </tbody>
+        <tbody>
+          <tr *ngFor="let item of fixtures; let i = index">
+            <td>{{ i + 1}}</td>
+            <td>{{ item.homeTeam }}</td>
+            <td>{{ item.awayTeam }}</td>
+          </tr>
+        </tbody>
+      </table>
+</div>

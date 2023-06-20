@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { FixtureDto } from '../services/fixture';
 
 @Component({
   selector: 'app-fixture',
@@ -6,5 +7,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./fixture.component.css']
 })
 export class FixtureComponent {
-
+  fixtures: FixtureDto[] = [];
 }

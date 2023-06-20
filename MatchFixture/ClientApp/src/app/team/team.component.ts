@@ -4,7 +4,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TeamService } from '../services/team';
 import { FixtureDto, FixtureService } from '../services/fixture';
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
@@ -33,7 +33,8 @@ export class TeamComponent {
     private teamService: TeamService,
     private fixtureService: FixtureService,
     private route: ActivatedRoute,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private router: Router,
     ) {
   }
 
@@ -60,6 +61,9 @@ export class TeamComponent {
       console.log(result);
       this.fixtures = result;
     })
+  }
+  getFixtures1() {
+    this.router.navigate(['/tournament/'+ this.id +'/fixture']);
   }
 
   buildForm() {

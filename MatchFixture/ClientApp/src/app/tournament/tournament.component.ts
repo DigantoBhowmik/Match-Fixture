@@ -206,6 +206,6 @@ export class TournamentComponent {
   }
 
   teamAdd(id: number) {
-    this.router.navigate(['/tournament', id]);
+    this.router.navigate(['/tournament/'+ id +'/team']);
   }
 }

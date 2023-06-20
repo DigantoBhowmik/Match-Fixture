@@ -4,29 +4,8 @@
   <div class="input-group-append">
       <button class="btn btn-primary" type="button" (click)="add(tournamentModal)">Add Tournament</button>
   </div>
-
 </div>
 
-<!-- <table class='table table-striped' aria-labelledby="tableLabel" *ngIf="tournaments">
-    <thead>
-      <tr>
-        <th>Sl. No.</th>
-        <th>Name</th>
-        <th>Action</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let item of tournaments; let i = index">
-        <td>{{ i + 1}}</td>
-        <td>{{ item.name }}</td>
-        <td>
-            <a class="mx-2" (click)="edit(item, tournamentModal)"><img src="assets/images/icons/edit.svg" alt="" /></a>
-            <a class="mx-2" (click)="delete(item.id)"><img src="assets/images/icons/trash.svg" alt="" /></a>
-            <button (click)="teamAdd(item.id)" class="btn-primary" type="button">Add Team</button>
-        </td>
-      </tr>
-    </tbody>
-  </table> -->
   <div class="rectangle row"  *ngFor="let item of tournaments">
     <div class="col-9" (click)="teamAdd(item.id)">
         <h3 class="name">{{ item.name }}</h3><span >Competition type: {{item.competitionType == 0 ? 'League': ''}}</span>

@@ -43,8 +43,8 @@ import { SidebarComponent } from './sidebar/sidebar.component';
       { path: 'counter', component: CounterComponent },
       { path: 'fetch-data', component: FetchDataComponent },
       { path: 'tournament', component: TournamentComponent},
-      { path: 'tournament/:id', component: TeamComponent},
-      { path: 'fixture', component: FixtureComponent},
+      { path: 'tournament/:id/team', component: TeamComponent},
+      { path: 'tournament/:id/fixture', component: FixtureComponent},
     ])
   ],
   //exports: [ToastrModule],
